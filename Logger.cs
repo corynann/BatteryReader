@@ -15,7 +15,16 @@ namespace BatteryReader
         Timer myTimer = new Timer();
         public event EventHandler Tick;
 
-        private int LogInterval { get; set; } = 1000; //Seconds
+        public int LogInterval
+        {
+            get => logInterval;
+            set
+            {
+                logInterval = value;
+                myTimer.Interval = value;
+            } 
+        }
+        private int logInterval = 2000; //milliseconds
 
         public string LogFile
         {
