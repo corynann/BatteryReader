@@ -12,8 +12,11 @@ namespace BatteryReader
         public Form1()
         {
             InitializeComponent();
-            
+
+            lg.Tick += Update;
+
             txt_Status.Text = "Waiting";
+            txt_LogFile.Text = lg.LogFile;
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
@@ -25,6 +28,14 @@ namespace BatteryReader
         {
             lg.Stop();
             txt_Status.Text = "Stopped";
+        }
+
+        void Update(object sender, EventArgs e)
+        {
+            var last = txt_LogBox.Text;
+            txt_LogBox.Text = lg.LogString;
+            txt_LogBox.AppendText(Environment.NewLine);
+            txt_LogBox.AppendText(last);
         }
     }
 }

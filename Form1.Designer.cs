@@ -33,6 +33,8 @@
             this.lbl_Status = new System.Windows.Forms.Label();
             this.txt_Status = new System.Windows.Forms.Label();
             this.txt_LogBox = new System.Windows.Forms.TextBox();
+            this.txt_LogFile = new System.Windows.Forms.Label();
+            this.lbl_LogFile = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btn_Start
@@ -58,7 +60,7 @@
             // lbl_Status
             // 
             this.lbl_Status.AutoSize = true;
-            this.lbl_Status.Location = new System.Drawing.Point(93, 31);
+            this.lbl_Status.Location = new System.Drawing.Point(93, 16);
             this.lbl_Status.Name = "lbl_Status";
             this.lbl_Status.Size = new System.Drawing.Size(42, 15);
             this.lbl_Status.TabIndex = 2;
@@ -67,7 +69,7 @@
             // txt_Status
             // 
             this.txt_Status.AutoSize = true;
-            this.txt_Status.Location = new System.Drawing.Point(141, 31);
+            this.txt_Status.Location = new System.Drawing.Point(141, 16);
             this.txt_Status.Name = "txt_Status";
             this.txt_Status.Size = new System.Drawing.Size(71, 15);
             this.txt_Status.TabIndex = 3;
@@ -81,11 +83,31 @@
             this.txt_LogBox.Size = new System.Drawing.Size(211, 176);
             this.txt_LogBox.TabIndex = 4;
             // 
+            // txt_LogFile
+            // 
+            this.txt_LogFile.AutoSize = true;
+            this.txt_LogFile.Location = new System.Drawing.Point(141, 45);
+            this.txt_LogFile.Name = "txt_LogFile";
+            this.txt_LogFile.Size = new System.Drawing.Size(77, 15);
+            this.txt_LogFile.TabIndex = 6;
+            this.txt_LogFile.Text = "<<LogFile>>";
+            // 
+            // lbl_LogFile
+            // 
+            this.lbl_LogFile.AutoSize = true;
+            this.lbl_LogFile.Location = new System.Drawing.Point(93, 45);
+            this.lbl_LogFile.Name = "lbl_LogFile";
+            this.lbl_LogFile.Size = new System.Drawing.Size(51, 15);
+            this.lbl_LogFile.TabIndex = 5;
+            this.lbl_LogFile.Text = "Log File:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(230, 252);
+            this.ClientSize = new System.Drawing.Size(361, 252);
+            this.Controls.Add(this.txt_LogFile);
+            this.Controls.Add(this.lbl_LogFile);
             this.Controls.Add(this.txt_LogBox);
             this.Controls.Add(this.txt_Status);
             this.Controls.Add(this.lbl_Status);
@@ -105,5 +127,7 @@
         private Label lbl_Status;
         private Label txt_Status;
         private TextBox txt_LogBox;
+        private Label txt_LogFile;
+        private Label lbl_LogFile;
     }
 }

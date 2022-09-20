@@ -13,8 +13,17 @@ namespace BatteryReader
     internal class Logger
     {
         Timer myTimer = new Timer();
+        public event EventHandler Tick;
 
-        private static int LogInterval { get; set; } = 1000; //Seconds
+        private int LogInterval { get; set; } = 1000; //Seconds
+
+        public string LogFile
+        {
+            get => logFile;
+            set => logFile = value;
+        }
+
+        private string logFile = @"C:\Users\nann_c1\Desktop\Log.csv";
 
         public double CurrentCharge
         {
@@ -33,26 +42,30 @@ namespace BatteryReader
         public string LogString
         {
             get => logString;
-            set => logString = value;
+            set
+            {
+                logString = value;
+                OnTick(new EventArgs());
+            } 
         }
 
         private string logString;
 
         public double Charge { get; set; }
+
         public Logger()
         {
             myTimer.Tick += new EventHandler(LogCharge);
-            myTimer.Interval = LogInterval; 
+            myTimer.Interval = LogInterval;
         }
 
-
-
-        public double GetCharge()
+        public virtual void OnTick(EventArgs e)
         {
-            Charge = BatteryTools.GetBatteryCharge();
-            return Charge;
-        }
+            WriteFile();
 
+            EventHandler handler = Tick;
+            handler?.Invoke(this, e);
+        }
 
         public void Start()
         {
@@ -69,9 +82,13 @@ namespace BatteryReader
             LoggedDateTime = DateTime.Now;
             LogString = Charge + " " + LoggedDateTime;
 
+
             Debug.WriteLine(LogString);
         }
 
-
+        void WriteFile()
+        {
+            File.AppendAllText(LogFile, LogString + Environment.NewLine);
+        }
     }
 }
