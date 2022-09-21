@@ -39,6 +39,7 @@
             this.txt_LogFile = new System.Windows.Forms.TextBox();
             this.lbl_Interval = new System.Windows.Forms.Label();
             this.int_Interval = new System.Windows.Forms.NumericUpDown();
+            this.chart_Battery = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
             this.gBox_Settings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.int_Interval)).BeginInit();
             this.SuspendLayout();
@@ -121,7 +122,7 @@
             this.gBox_Settings.Controls.Add(this.lbl_Interval);
             this.gBox_Settings.Controls.Add(this.int_Interval);
             this.gBox_Settings.Controls.Add(this.lbl_LogFile);
-            this.gBox_Settings.Location = new System.Drawing.Point(239, 12);
+            this.gBox_Settings.Location = new System.Drawing.Point(574, 12);
             this.gBox_Settings.Name = "gBox_Settings";
             this.gBox_Settings.Size = new System.Drawing.Size(388, 100);
             this.gBox_Settings.TabIndex = 8;
@@ -169,11 +170,19 @@
             0});
             this.int_Interval.ValueChanged += new System.EventHandler(this.int_Interval_ValueChanged);
             // 
+            // chart_Battery
+            // 
+            this.chart_Battery.Location = new System.Drawing.Point(229, 3);
+            this.chart_Battery.Name = "chart_Battery";
+            this.chart_Battery.Size = new System.Drawing.Size(339, 243);
+            this.chart_Battery.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(764, 453);
+            this.ClientSize = new System.Drawing.Size(1204, 453);
+            this.Controls.Add(this.chart_Battery);
             this.Controls.Add(this.gBox_Settings);
             this.Controls.Add(this.btn_Settings);
             this.Controls.Add(this.txt_LogBox);
@@ -181,9 +190,11 @@
             this.Controls.Add(this.lbl_Status);
             this.Controls.Add(this.btn_Stop);
             this.Controls.Add(this.btn_Start);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Battery Logger";
             this.gBox_Settings.ResumeLayout(false);
             this.gBox_Settings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.int_Interval)).EndInit();
@@ -205,5 +216,6 @@
         private TextBox txt_LogFile;
         private Label lbl_Interval;
         private NumericUpDown int_Interval;
+        private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart chart_Battery;
     }
 }

@@ -6,15 +6,37 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Xml;
 using Timer = System.Windows.Forms.Timer;
 
 namespace BatteryReader
 {
+    public enum LoggerState
+    {
+        Inactive,
+        Running,
+        Paused,
+        Terminated
+    }
+
     internal class Logger
     {
+        #region Properties
+        
         Timer myTimer = new Timer();
-        public event EventHandler Tick;
 
+
+        public LoggerState State
+        {
+            get => state;
+            private set => state = value;
+        }
+        private LoggerState state;
+
+
+        /// <summary>
+        /// Interval in milliseconds
+        /// </summary>
         public int LogInterval
         {
             get => logInterval;
@@ -24,16 +46,21 @@ namespace BatteryReader
                 myTimer.Interval = value;
             } 
         }
-        private int logInterval = 2000; //milliseconds
+        private int logInterval = 10000; 
 
+        /// <summary>
+        /// Location of Saved Data
+        /// </summary>
         public string LogFile
         {
             get => logFile;
             set => logFile = value;
         }
+        private string logFile = "Log.csv";//@"C:\Users\nann_c1\Desktop\Log.csv";
 
-        private string logFile = @"C:\Users\nann_c1\Desktop\Log.csv";
-
+        /// <summary>
+        /// Current Battery reading (%)
+        /// </summary>
         public double CurrentCharge
         {
             get => currentCharge;
@@ -41,6 +68,9 @@ namespace BatteryReader
         }
         double currentCharge = 0;
 
+        /// <summary>
+        /// DateTime of Charge reading
+        /// </summary>
         public DateTime LoggedDateTime
         {
             get => loggedDateTime;
@@ -48,56 +78,98 @@ namespace BatteryReader
         }
         private DateTime loggedDateTime;
 
+
         public string LogString
         {
             get => logString;
             set
             {
                 logString = value;
-                OnTick(new EventArgs());
+                OnLog(new EventArgs());
             } 
         }
-
         private string logString;
 
-        public double Charge { get; set; }
+        #endregion
+
+        #region Initialize
 
         public Logger()
         {
-            myTimer.Tick += new EventHandler(LogCharge);
+            Initialize();
+        }
+
+        void Initialize()
+        {
+            myTimer.Tick += LogCharge;
             myTimer.Interval = LogInterval;
         }
 
-        public virtual void OnTick(EventArgs e)
-        {
-            WriteFile();
+        #endregion
+        
+        #region Events
 
-            EventHandler handler = Tick;
+        public event EventHandler Started;
+        public virtual void OnStart(EventArgs e)
+        {
+            myTimer.Start();
+
+            EventHandler handler = Started;
             handler?.Invoke(this, e);
         }
 
+        public event EventHandler Stopped;
+
+        public virtual void OnStop(EventArgs e)
+        {
+            myTimer.Stop();
+
+            EventHandler handler = Stopped;
+            handler?.Invoke(this, e);
+        }
+
+        public event EventHandler Logged;
+        public virtual void OnLog(EventArgs e)
+        {
+            WriteFile();
+
+            EventHandler handler = Logged;
+            handler?.Invoke(this, e);
+        }
+
+
+        #endregion
+
+        #region Commands
+
         public void Start()
         {
-            myTimer.Start();
+            OnStart(new EventArgs());
         }
 
         public void Stop()
         {
-            myTimer.Stop();
+            OnStop(new EventArgs());
         }
-        public void LogCharge(object sender, EventArgs e)
+
+        #endregion
+
+        #region Private Methods
+
+        void LogCharge(object sender, EventArgs e)
         {
-            Charge = BatteryTools.GetBatteryCharge();
+            CurrentCharge = BatteryTools.GetBatteryCharge();
             LoggedDateTime = DateTime.Now;
-            LogString = Charge + " " + LoggedDateTime;
 
-
-            Debug.WriteLine(LogString);
+            LogString = CurrentCharge + " " + LoggedDateTime.ToShortTimeString();
         }
 
         void WriteFile()
         {
-            File.AppendAllText(LogFile, LogString + Environment.NewLine);
+            string newLine = CurrentCharge + ", " + LoggedDateTime + Environment.NewLine;
+            File.AppendAllText(LogFile, newLine);
         }
+        
+        #endregion
     }
 }
